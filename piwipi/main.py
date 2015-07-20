@@ -10,7 +10,9 @@ from functools import partial
 import click
 import pytz
 import dateutil.parser
-from pyexchange import Exchange2010Service, ExchangeNTLMAuthConnection
+from pyexchange import Exchange2010Service
+
+from .connection import ExchangeNTLMAuthConnection
 
 
 DEFAULT_TIMEZONE = 'America/Sao_Paulo'

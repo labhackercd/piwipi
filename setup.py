@@ -13,7 +13,11 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    install_requires=[],
+    install_requires=[
+        'click == 4.1',
+        'pyexchange == 0.6',
+        'py-dateutil == 2.2'
+    ],
 
     entry_points={
         'console_scripts': {
