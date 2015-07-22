@@ -64,7 +64,8 @@ def get_all_calendar_events(service, username, password, start, end, details):
 @click_required_option('--timezone', '-Z', default=DEFAULT_TIMEZONE,
                        help='Dates time zone. Defaults to {0}.'.format(DEFAULT_TIMEZONE))
 @click.option('--details/--no-details', default=False)
-def main(service, username, password, start, end, timezone, details):
+@click.option('--output', '-o', type=click.File(mode='w+', atomic=True, encoding='utf-8'), help='Output path to write to.')
+def main(service, username, password, start, end, timezone, details, output):
 
     start = dateutil.parser.parse(start)
     end = dateutil.parser.parse(end)
@@ -75,7 +76,14 @@ def main(service, username, password, start, end, timezone, details):
 
     events = get_all_calendar_events(service, username, password, start, end, details)
 
-    print(json.dumps(events, cls=EventEncoder, indent=2, skipkeys=True))
+    if output is None:
+        output_device = print
+    else:
+        print('Writing to file {0}'.format(output))
+        output_device = output.write
+
+    # FIXME is `print` really utf-8?
+    output_device(json.dumps(events, cls=EventEncoder, indent=2, skipkeys=True).decode('utf-8'))
 
     return 0
 
